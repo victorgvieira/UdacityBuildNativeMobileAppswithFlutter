@@ -1,43 +1,46 @@
-// DONE Step 1.0: Delete the contents of your app's lib/main.dart.
-// DONE Step 1.1: Paste in the code from lib/main.dart in the HelloRectangle app into your app's lib/main.dart
 // Copyright 2018 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+// You can read about packages here: https://flutter.io/using-packages/
 import 'package:flutter/material.dart';
+import 'package:hello_rectangle/category.dart';
 
+// You can use a relative import, i.e. `import 'category.dart';` or
+// a package import, as shown below.
+// More details at http://dart-lang.github.io/linter/lints/avoid_relative_lib_imports.html
+
+// NOTE Starter code copied from: https://github.com/flutter/udacity-course/tree/master/course/02_category_widget/task_02_category_widget
+
+// DONE Step 2.0: Pass this information into your custom [Category] widget
+const _categoryName = 'Cake';
+const _categoryIcon = Icons.cake;
+const _categoryColor = Colors.green;
+
+/// The function that is called when main.dart is run.
 void main() {
-  runApp(
-    MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Hello Rectangle',
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Hello Rectangle'),
-        ),
-        body: HelloRectangle(),
-      ),
-    ),
-  );
+  runApp(UnitConverterApp());
 }
 
-class HelloRectangle extends StatelessWidget {
+/// This widget is the root of our application.
+/// Currently, we just show one widget in our app.
+class UnitConverterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        color: Colors.greenAccent,
-        height: 400.0,
-        width: 300.0,
-        child: Center(
-          child: Text(
-            'Hello!',
-            style: TextStyle(fontSize: 40.0),
-            textAlign: TextAlign.center,
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Unit Converter',
+      home: Scaffold(
+        backgroundColor: Colors.green[100],
+        body: Center(
+          // DONE Step 2.1: Determine what properties you'll need to pass into the widget
+          child: Category(
+            categoryColor: _categoryColor,
+            categoryIcon: _categoryIcon,
+            categoryName: _categoryName,
           ),
         ),
       ),
     );
   }
 }
-// DONE Step 1.2: Open your device or emulator, and build and launch the app using the green Play button in Android Studio or from the command line, do "flutter run" inside your app's project directory.
