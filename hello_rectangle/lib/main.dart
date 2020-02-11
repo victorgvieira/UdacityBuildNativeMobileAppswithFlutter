@@ -5,6 +5,9 @@
 // You can read about packages here: https://flutter.io/using-packages/
 import 'package:flutter/material.dart';
 import 'package:hello_rectangle/category.dart';
+import 'package:hello_rectangle/category_route.dart';
+
+// TODO: Import the CategoryRoute widget
 
 // You can use a relative import, i.e. `import 'category.dart';` or
 // a package import, as shown below.
@@ -28,19 +31,21 @@ class UnitConverterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Unit Converter',
-      home: Scaffold(
-        backgroundColor: Colors.green[100],
-        body: Center(
-          // DONE Step 2.1: Determine what properties you'll need to pass into the widget
-          child: Category(
-            categoryColor: _categoryColor,
-            categoryIcon: _categoryIcon,
-            categoryName: _categoryName,
-          ),
-        ),
-      ),
-    );
+        debugShowCheckedModeBanner: false,
+        title: 'Unit Converter',
+        // DONE Step 3.0: Instead of pointing to exactly 1 Category widget,
+        // our home should now point to an instance of the CategoryRoute widget.
+        home: CategoryRoute()
+//      Scaffold(
+//        body: Center(
+//          // DONE Step 2.1: Determine what properties you'll need to pass into the widget
+//          child: Category(
+//            categoryColor: _categoryColor,
+//            categoryIcon: _categoryIcon,
+//            categoryName: _categoryName,
+//          ),
+//        ),
+//      ),
+        );
   }
 }

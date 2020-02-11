@@ -20,7 +20,8 @@ const _textSize = 24.0;
 class Category extends StatelessWidget {
   final String categoryName;
   final IconData categoryIcon;
-  final MaterialColor categoryColor;
+  // DONE Step 3.6: This type was changed in order accept MaterialColor and MaterialAccentColor
+  final ColorSwatch categoryColor;
 
   /// Creates a [Category].
   ///
