@@ -5,6 +5,8 @@
 // To keep your imports tidy, follow the ordering guidelines at
 // https://www.dartlang.org/guides/language/effective-dart/style#ordering
 import 'package:flutter/material.dart';
+import 'package:hello_rectangle/converter_route.dart';
+import 'package:hello_rectangle/unit.dart';
 import 'package:meta/meta.dart';
 
 /// A custom [Category] widget.
@@ -20,8 +22,10 @@ const _textSize = 24.0;
 class Category extends StatelessWidget {
   final String categoryName;
   final IconData categoryIcon;
+
   // DONE Step 3.6: This type was changed in order accept MaterialColor and MaterialAccentColor
   final ColorSwatch categoryColor;
+  final List<Unit> units;
 
   /// Creates a [Category].
   ///
@@ -29,13 +33,41 @@ class Category extends StatelessWidget {
   /// the UI, and the icon that represents it (e.g. a ruler).
   // DONE Step 2.2: You'll need the name, color, and iconLocation from main.dart
   // NOTE: put variables in {} means that they are optional and named
-  const Category(
-      {@required this.categoryName,
-      @required this.categoryIcon,
-      @required this.categoryColor})
-      : assert(categoryColor != null),
-        assert(categoryName != null),
-        assert(categoryIcon != null);
+  const Category({
+    Key key,
+    @required this.categoryName,
+    @required this.categoryColor,
+    @required this.categoryIcon,
+    @required this.units,
+  })  : assert(categoryName != null),
+        assert(categoryColor != null),
+        assert(categoryIcon != null),
+        assert(units != null),
+        super(key: key);
+
+  /// Navigates to the [ConverterRoute].
+  void _navigateToConverter(BuildContext context) {
+    // DONE 4.0: Using the Navigator, navigate to the [ConverterRoute]
+    Navigator.push(context, MaterialPageRoute(
+      builder: (BuildContext context) {
+        return Scaffold(
+          appBar: AppBar(
+            centerTitle: true,
+            backgroundColor: categoryColor,
+            elevation: 1.0,
+            title: Text(
+              categoryName,
+              style: Theme.of(context).textTheme.display1,
+            ),
+          ),
+          body: ConverterRoute(
+            color: categoryColor,
+            units: units,
+          ),
+        );
+      },
+    ));
+  }
 
   /// Builds a custom widget that shows [Category] information.
   ///
@@ -55,8 +87,11 @@ class Category extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: InkWell(
             borderRadius: BorderRadius.circular(_borderRadius),
+            // We can use either the () => function() or the () { function(); }
+            // syntax.
+            // DONE Step 4.1: Update this onTap property to call _navigateToConverter()
             onTap: () {
-              print('I was tapped!');
+              _navigateToConverter(context);
             },
             splashColor: categoryColor,
             highlightColor: categoryColor,

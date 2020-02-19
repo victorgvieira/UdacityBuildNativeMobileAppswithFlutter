@@ -7,6 +7,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:hello_rectangle/category.dart';
+import 'package:hello_rectangle/unit.dart';
 
 // DONE 3.2: Define any constants
 final _appBarTitle = "Unit Converter";
@@ -54,8 +55,20 @@ class CategoryRoute extends StatelessWidget {
               categoryName: _categoryNames[index],
               categoryColor: _baseColors[index],
               categoryIcon: Icons.cake,
+              units: _retrieveUnitList(_categoryNames[index]),
             ));
     return result;
+  }
+
+  /// Returns a list of mock [Unit]s.
+  List<Unit> _retrieveUnitList(String categoryName) {
+    return List.generate(10, (int i) {
+      i += 1;
+      return Unit(
+        name: '$categoryName Unit $i',
+        conversion: i.toDouble(),
+      );
+    });
   }
 
   @override
@@ -85,7 +98,7 @@ class CategoryRoute extends StatelessWidget {
         _appBarTitle,
         style: TextStyle(
           fontSize: _appBarFontSize,
-          color: Colors.black
+          color: Colors.black,
         ),
       ),
       centerTitle: true,

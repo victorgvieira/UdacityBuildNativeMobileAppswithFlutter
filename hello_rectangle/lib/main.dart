@@ -5,9 +5,9 @@
 // You can read about packages here: https://flutter.io/using-packages/
 import 'package:flutter/material.dart';
 import 'package:hello_rectangle/category.dart';
-import 'package:hello_rectangle/category_route.dart';
 
-// TODO: Import the CategoryRoute widget
+// DONE: Import the CategoryRoute widget
+import 'package:hello_rectangle/category_route.dart';
 
 // You can use a relative import, i.e. `import 'category.dart';` or
 // a package import, as shown below.
