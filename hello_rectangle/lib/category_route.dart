@@ -23,11 +23,17 @@ final _appColor = Colors.green[100];
 ///
 /// While it is named CategoryRoute, a more apt name would be CategoryScreen,
 /// because it is responsible for the UI at the route's destination.
-// TODO: Make CategoryRoute a StatefulWidget
-class CategoryRoute extends StatelessWidget {
+// DONE Step 5.3: Make CategoryRoute a StatefulWidget
+class CategoryRoute extends StatefulWidget {
   const CategoryRoute();
 
-  // TODO: Create State object for the CategoryRoute
+  @override
+  _CategoryRouteState createState() => _CategoryRouteState();
+}
+
+// DONE Step 5.4: Create State object for the CategoryRoute
+class _CategoryRouteState extends State<CategoryRoute> {
+  List<Category> categoryList;
 
   static const _categoryNames = <String>[
     'Length',
@@ -51,6 +57,17 @@ class CategoryRoute extends StatelessWidget {
     Colors.red,
   ];
 
+  /// Returns a list of mock [Unit]s.
+  List<Unit> _retrieveUnitList(String categoryName) {
+    return List.generate(10, (int i) {
+      i += 1;
+      return Unit(
+        name: '$categoryName Unit $i',
+        conversion: i.toDouble(),
+      );
+    });
+  }
+
   List<Category> _createCategoryList() {
     List<Category> result = List.generate(
         8,
@@ -63,15 +80,10 @@ class CategoryRoute extends StatelessWidget {
     return result;
   }
 
-  /// Returns a list of mock [Unit]s.
-  List<Unit> _retrieveUnitList(String categoryName) {
-    return List.generate(10, (int i) {
-      i += 1;
-      return Unit(
-        name: '$categoryName Unit $i',
-        conversion: i.toDouble(),
-      );
-    });
+  @override
+  void initState() {
+    categoryList = _createCategoryList();
+    super.initState();
   }
 
   @override
@@ -79,12 +91,11 @@ class CategoryRoute extends StatelessWidget {
     // DONE Step 3,3: Create a list of the eight Categories, using the names and colors
     // from above. Use a placeholder icon, such as `Icons.cake` for each
     // Category. We'll add custom icons later.
-    // TODO: Instead of re-creating a list of Categories in every build(),
+    // DONE Step 5.5: Instead of re-creating a list of Categories in every build(),
     // save this as a variable inside the State object and create
     // the list at initialization (in initState()).
     // This way, you also don't have to pass in the list of categories to
     // _buildCategoryWidgets()
-    var categoryList = _createCategoryList();
 
     // DONE Step 3.4: Create a list view of the Categories
     final listView = ListView.builder(
