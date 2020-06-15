@@ -44,16 +44,9 @@ class Api {
   /// Returns a list. Returns null on error.
   // NOTE json.decode return as a MAP
   Future<List> getUnits(String category) async {
-    final httpRequest = await _httpClient.getUrl(_getUnitsUri(category));
-    final httpResponse = await httpRequest.close();
-    // NOTE: HttpStatus.OK is deprecated
-    if (httpResponse.statusCode != HttpStatus.ok) {
-      return null;
-    }
-    final responseBody = await httpResponse.transform(utf8.decoder).join();
-    final jsonResponse = json.decode(responseBody);
-    final value = jsonResponse['units'];
-    return value;
+    final jsonResponse = await _getResponseAsJson(_getUnitsUri(category));
+    if (jsonResponse == null || jsonResponse["units"] == null) return null;
+    return jsonResponse['units'];
   }
 
 // DONE Step 3: Create convert()
@@ -66,16 +59,34 @@ class Api {
     String fromUnit,
     String toUnit,
   ) async {
-    final httpRequest = await _httpClient.getUrl(_getConverterUri().replace(
-        queryParameters: {"amount": amount, "from": fromUnit, "to": toUnit}));
-    final httpResponse = await httpRequest.close();
-    // NOTE: HttpStatus.OK is deprecated
-    if (httpResponse.statusCode != HttpStatus.ok) {
+    final uriRequest = _getConverterUri().replace(
+        queryParameters: {"amount": amount, "from": fromUnit, "to": toUnit});
+    final jsonResponse = await _getResponseAsJson(uriRequest);
+    if (jsonResponse == null || jsonResponse["status"] == null) {
+      return null;
+    } else if (jsonResponse["status"] == "error") {
+      print(jsonResponse["message"]);
       return null;
     }
-    final responseBody = await httpResponse.transform(utf8.decoder).join();
-    final jsonResponse = json.decode(responseBody);
-    final value = jsonResponse['conversion'].toDouble();
-    return value;
+    final conversionResult = jsonResponse["conversion"].toDouble();
+    return conversionResult;
+  }
+
+  Future<Map<String, dynamic>> _getResponseAsJson(Uri uri) async {
+    try {
+      final httpRequest = await _httpClient.getUrl(uri);
+      final httpResponse = await httpRequest.close();
+      // NOTE: HttpStatus.OK is deprecated
+      if (httpResponse.statusCode != HttpStatus.ok) {
+        return null;
+      }
+      // The response is sent as a Stream of bytes that we need to convert to a
+      // `String`.
+      final responseBody = await httpResponse.transform(utf8.decoder).join();
+      return json.decode(responseBody);
+    } on Exception catch (e) {
+      print("$e");
+      return null;
+    }
   }
 }
