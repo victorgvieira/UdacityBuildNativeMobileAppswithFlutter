@@ -7,7 +7,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'category.dart';
-import 'unit.dart';
+
+/// If we had more, we could keep a list of [Categories] here.
+const apiCategory = {
+  'name': 'Currency',
+  'route': 'currency',
+};
 
 /// The REST API retrieves unit conversions for [Categories] that change.
 ///
@@ -19,15 +24,15 @@ import 'unit.dart';
 ///   GET /currency/convert: get conversion from one currency amount to another
 class Api {
   // DONE Step 1.1: Add any relevant variables and helper functions
-  final httpClient = HttpClient();
-  final baseUrl = "flutter.udacity.com";
+  final _httpClient = HttpClient();
+  final _baseUrl = "flutter.udacity.com";
 
-  Uri _getUnitsUri() {
-    return Uri.https(baseUrl, "/currency");
+  Uri _getUnitsUri(String category) {
+    return Uri.https(_baseUrl, "/$category");
   }
 
   Uri _getConverterUri() {
-    return Uri.https(baseUrl, "/currency/convert");
+    return Uri.https(_baseUrl, "/currency/convert");
   }
 
 // DONE Step 2: Create getUnits()
@@ -37,8 +42,9 @@ class Api {
   /// retrieve units. We pass this into the query parameter in the API call.
   ///
   /// Returns a list. Returns null on error.
-  Future<List<Unit>> getUnits() async {
-    final httpRequest = await httpClient.getUrl(_getUnitsUri());
+  // NOTE json.decode return as a MAP
+  Future<List> getUnits(String category) async {
+    final httpRequest = await _httpClient.getUrl(_getUnitsUri(category));
     final httpResponse = await httpRequest.close();
     // NOTE: HttpStatus.OK is deprecated
     if (httpResponse.statusCode != HttpStatus.ok) {
@@ -55,16 +61,13 @@ class Api {
   ///
   /// Returns a double, which is the converted amount. Returns null on error.
   Future<double> convert(
-    double amount,
+    String category,
+    String amount,
     String fromUnit,
     String toUnit,
   ) async {
-    final httpRequest = await httpClient.getUrl(_getConverterUri().replace(
-        queryParameters: {
-          "amount": amount.toString(),
-          "from": fromUnit,
-          "to": toUnit
-        }));
+    final httpRequest = await _httpClient.getUrl(_getConverterUri().replace(
+        queryParameters: {"amount": amount, "from": fromUnit, "to": toUnit}));
     final httpResponse = await httpRequest.close();
     // NOTE: HttpStatus.OK is deprecated
     if (httpResponse.statusCode != HttpStatus.ok) {
