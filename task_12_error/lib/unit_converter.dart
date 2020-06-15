@@ -36,7 +36,9 @@ class _UnitConverterState extends State<UnitConverter> {
   List<DropdownMenuItem> _unitMenuItems;
   bool _showValidationError = false;
   final _inputKey = GlobalKey(debugLabel: 'inputText');
-  // TODO: Add a flag for whether to show error UI
+
+  // DONE Step 1: Add a flag for whether to show error UI
+  bool _showError = false;
 
   @override
   void initState() {
@@ -109,9 +111,14 @@ class _UnitConverterState extends State<UnitConverter> {
       final api = Api();
       final conversion = await api.convert(apiCategory['route'],
           _inputValue.toString(), _fromValue.name, _toValue.name);
-      // TODO: Check whether to show an error UI
+      // DONE Step 2: Check whether to show an error UI
       setState(() {
-        _convertedValue = _format(conversion);
+        if (conversion == null) {
+          _showError = true;
+        } else {
+          _showError = false;
+          _convertedValue = _format(conversion);
+        }
       });
     } else {
       // For the static units, we do the conversion ourselves
@@ -184,8 +191,8 @@ class _UnitConverterState extends State<UnitConverter> {
       child: Theme(
         // This sets the color of the [DropdownMenuItem]
         data: Theme.of(context).copyWith(
-              canvasColor: Colors.grey[50],
-            ),
+          canvasColor: Colors.grey[50],
+        ),
         child: DropdownButtonHideUnderline(
           child: ButtonTheme(
             alignedDropdown: true,

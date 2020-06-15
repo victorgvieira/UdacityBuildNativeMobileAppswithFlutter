@@ -26,12 +26,12 @@ class CategoryTile extends StatelessWidget {
   const CategoryTile({
     Key key,
     @required this.category,
-    // TODO: You may want to pass in a null onTap when the Currency [Category]
+    // DONE Step 4: You may want to pass in a null onTap when the Currency [Category]
     // is in a loading or error state. In build(), you'll want to update the UI
     // accordingly.
     @required this.onTap,
   })  : assert(category != null),
-        assert(onTap != null),
+//        assert(onTap != null),
         super(key: key);
 
   /// Builds a custom widget that shows [Category] information.
@@ -53,7 +53,7 @@ class CategoryTile extends StatelessWidget {
           splashColor: category.color['splash'],
           // We can use either the () => function() or the () { function(); }
           // syntax.
-          onTap: () => onTap(category),
+          onTap: () => {if (onTap != null) onTap(category)},
           child: Padding(
             padding: EdgeInsets.all(8.0),
             child: Row(
