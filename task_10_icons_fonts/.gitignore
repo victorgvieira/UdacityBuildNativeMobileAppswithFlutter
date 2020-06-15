@@ -9,3 +9,9 @@ build/
 ios/.generated/
 packages
 .flutter-plugins
+/pubspec.lock
+/ios/Flutter/flutter_export_environment.sh
+/android/gradle/wrapper/gradle-wrapper.jar
+/android/gradle/wrapper/gradle-wrapper.properties
+/android/gradlew
+/android/gradlew.bat
